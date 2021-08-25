@@ -1,6 +1,6 @@
 # jupyterlab_cube
 
-![Github Actions Status](https://github.com/osscar-org/jupyterlab-cube/workflows/Build/badge.svg)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/jupyterlab-cube/master?urlpath=lab)
+![Github Actions Status](https://github.com/osscar-org/jupyterlab-cube/workflows/Build/badge.svg)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/jupyterlab-cube/develop?urlpath=lab)
 
 A JupyterLab extension for rendering cube files.
 
