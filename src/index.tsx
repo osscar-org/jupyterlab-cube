@@ -1,6 +1,10 @@
 import { IRenderMime } from '@jupyterlab/rendermime-interfaces';
-
 import { Widget } from '@lumino/widgets';
+
+import { Visualizer } from './visualizer';
+
+import * as ReactDOM from 'react-dom';
+import React from 'react';
 
 /**
  * The default mime type for the extension.
@@ -30,8 +34,12 @@ export class OutputWidget extends Widget implements IRenderMime.IRenderer {
    */
   renderModel(model: IRenderMime.IMimeModel): Promise<void> {
     const data = model.data[this._mimeType] as string;
-    this.node.textContent = data.slice(0, 16384);
-    return Promise.resolve();
+
+    return new Promise<void>((resolve, reject) => {
+      ReactDOM.render(<Visualizer data={data} />, this.node, () => {
+        resolve();
+      });
+    });
   }
 
   private _mimeType: string;
@@ -58,7 +66,8 @@ const extension: IRenderMime.IExtension = {
     {
       name: 'cube',
       mimeTypes: [MIME_TYPE],
-      extensions: ['.cube'],
+      extensions: ['.cube', '.cub'],
+      iconClass: 'jp-MaterialIcon jp-CubeIcon',
     },
   ],
   documentWidgetFactoryOptions: {

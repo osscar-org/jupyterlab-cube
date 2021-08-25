@@ -1,0 +1,21 @@
+:root {
+  --jp-icon-cube: url('./cube.svg');
+}
+
+/* Document icon */
+.jp-CubeIcon {
+  background-image: var(--jp-icon-cube);
+  background-position: center;
+}
+
+.slider-div {
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-group {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
