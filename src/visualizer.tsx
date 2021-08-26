@@ -99,6 +99,7 @@ export class Visualizer extends React.Component<IProps, IState> {
           >
             <FormControlLabel value="black" control={<Radio />} label="Black" />
             <FormControlLabel value="white" control={<Radio />} label="White" />
+            <FormControlLabel value="gray" control={<Radio />} label="Gray" />
             <FormControlLabel
               value="yellow"
               control={<Radio />}
