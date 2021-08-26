@@ -1,5 +1,5 @@
 {
-  "name": "jupyterlab_cube",
+  "name": "jupyterlab-cube",
   "version": "0.1.0",
   "description": "A JupyterLab extension for rendering cube files.",
   "keywords": [
