@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Slider from '@material-ui/core/Slider';
 // import Button from '@material-ui/core/Button';
 // import Switch from '@material-ui/core/Switch';
 
@@ -16,6 +17,33 @@ export interface IState {
   filter?: string;
   value: string;
 }
+
+const marks = [
+  {
+    value: 0,
+    label: '0%',
+  },
+  {
+    value: 20,
+    label: '20%',
+  },
+  {
+    value: 40,
+    label: '40%',
+  },
+  {
+    value: 60,
+    label: '60%',
+  },
+  {
+    value: 80,
+    label: '80%',
+  },
+  {
+    value: 100,
+    label: '100%',
+  },
+];
 
 export class Visualizer extends React.Component<IProps, IState> {
   private _stage: any;
@@ -45,18 +73,20 @@ export class Visualizer extends React.Component<IProps, IState> {
 
       this._stage.loadFile(stringBlob, { ext: 'cube' }).then((o: any) => {
         o.addRepresentation('surface', {
+          name: 'positive_surface',
           visible: true,
           isolevelType: 'value',
           isolevel: 0.01,
-          color: 'blue',
+          color: 'red',
           opacity: 0.7,
           opaqueBack: false,
         });
         o.addRepresentation('surface', {
+          name: 'negative_surface',
           visible: true,
           isolevelType: 'value',
           isolevel: -0.01,
-          color: 'red',
+          color: 'blue',
           opacity: 0.7,
           opaqueBack: false,
         });
@@ -82,13 +112,57 @@ export class Visualizer extends React.Component<IProps, IState> {
     this.setState({ value: event.target.value });
   };
 
+  valuetext(value: number): string {
+    return String(value) + '%';
+  }
+
+  handleOpacityChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number | number[]
+  ): void => {
+    const transparency = (value as number) / 100.0;
+    this._stage
+      .getRepresentationsByName('positive_surface')
+      .setParameters({ opacity: transparency });
+    this._stage
+      .getRepresentationsByName('negative_surface')
+      .setParameters({ opacity: transparency });
+  };
+
   render(): JSX.Element {
     return (
       <div className="container">
-        <div
-          id={this.uuid}
-          style={{ width: '100%', height: '400px', backgroundColor: 'black' }}
-        ></div>
+        <Grid
+          container
+          spacing={3}
+          justify="center"
+          style={{ marginTop: '20px' }}
+        >
+          <Grid item sm={8}>
+            <div
+              id={this.uuid}
+              style={{
+                width: '100%',
+                height: '400px',
+                backgroundColor: 'black',
+              }}
+            ></div>
+          </Grid>
+          <Grid item sm={1}>
+            <Slider
+              orientation="vertical"
+              getAriaValueText={this.valuetext}
+              valueLabelDisplay="auto"
+              defaultValue={70}
+              aria-labelledby="vertical-slider"
+              min={0}
+              max={100}
+              marks={marks}
+              onChange={this.handleOpacityChange}
+              color={'primary'}
+            />
+          </Grid>
+        </Grid>
         <Grid container direction="row" justify="center" alignItems="center">
           <RadioGroup
             aria-label="backgroundcolor"
