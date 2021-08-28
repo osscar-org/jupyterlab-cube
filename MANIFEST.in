@@ -7,6 +7,8 @@ include package.json
 include install.json
 include ts*.json
 
+exclude tasks.py
+
 graft jupyterlab_cube/labextension
 
 # Javascript files
