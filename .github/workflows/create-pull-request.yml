@@ -36,9 +36,6 @@ jobs:
             automated pr
           assignees: dou-du
           reviewers: dou-du
-          team-reviewers: |
-            owners
-            maintainers
           milestone: "version 1"
           draft: false
 
