@@ -18,7 +18,7 @@ export interface IState {
   value: string;
 }
 
-const marks = [
+const marks1 = [
   {
     value: 0,
     label: '0%',
@@ -42,6 +42,29 @@ const marks = [
   {
     value: 100,
     label: '100%',
+  },
+];
+
+const marks2 = [
+  {
+    value: -0.02,
+    label: '-0.02',
+  },
+  {
+    value: -0.01,
+    label: '-0.01',
+  },
+  {
+    value: 0,
+    label: '0',
+  },
+  {
+    value: 0.01,
+    label: '0.01',
+  },
+  {
+    value: 0.02,
+    label: '0.02',
   },
 ];
 
@@ -129,6 +152,20 @@ export class Visualizer extends React.Component<IProps, IState> {
       .setParameters({ opacity: transparency });
   };
 
+  handleIsovalueChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number | number[]
+  ): void => {
+    const val = value as number[];
+
+    this._stage
+      .getRepresentationsByName('positive_surface')
+      .setParameters({ isolevel: val[1] });
+    this._stage
+      .getRepresentationsByName('negative_surface')
+      .setParameters({ isolevel: val[0] });
+  };
+
   render(): JSX.Element {
     return (
       <div className="container">
@@ -157,9 +194,24 @@ export class Visualizer extends React.Component<IProps, IState> {
               aria-labelledby="vertical-slider"
               min={0}
               max={100}
-              marks={marks}
+              marks={marks1}
               onChange={this.handleOpacityChange}
               color={'primary'}
+            />
+          </Grid>
+          <Grid item sm={1}>
+            <Slider
+              orientation="vertical"
+              defaultValue={[0.01, -0.01]}
+              aria-labelledby="vertical-slider"
+              getAriaValueText={this.valuetext}
+              valueLabelDisplay="on"
+              marks={marks2}
+              min={-0.02}
+              max={0.02}
+              step={0.001}
+              onChange={this.handleIsovalueChange}
+              color={'secondary'}
             />
           </Grid>
         </Grid>
