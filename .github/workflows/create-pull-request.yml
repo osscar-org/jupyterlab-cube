@@ -23,7 +23,7 @@ jobs:
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: false
           base: master
-          delete-branch: false
+          delete-branch: true
           title: 'New Release'
           body: |
             Update for new release
@@ -39,7 +39,7 @@ jobs:
           team-reviewers: |
             owners
             maintainers
-          milestone: version 1
+          milestone: "version 1"
           draft: false
 
       - name: Check outputs
