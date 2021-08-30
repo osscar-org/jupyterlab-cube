@@ -67,3 +67,12 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.PYPI_PASSWORD }}
+
+    - name: Publish package to NPM
+      run: |
+        yarn install
+        yarn run build
+        npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
