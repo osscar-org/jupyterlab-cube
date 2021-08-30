@@ -6,6 +6,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Slider from '@material-ui/core/Slider';
+import UploadButtons from './uploadbuttons';
 // import Button from '@material-ui/core/Button';
 // import Switch from '@material-ui/core/Switch';
 
@@ -166,6 +167,15 @@ export class Visualizer extends React.Component<IProps, IState> {
       .setParameters({ isolevel: val[0] });
   };
 
+  loadStructure = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    this._stage.loadFile(event.target.files[0]).then((o: any) => {
+      o.addRepresentation('ball+stick', {
+        name: 'structure',
+        visible: true,
+      });
+    });
+  };
+
   render(): JSX.Element {
     return (
       <div className="container">
@@ -215,7 +225,13 @@ export class Visualizer extends React.Component<IProps, IState> {
             />
           </Grid>
         </Grid>
-        <Grid container direction="row" justify="center" alignItems="center">
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+          style={{ marginTop: '20px' }}
+        >
           <RadioGroup
             aria-label="backgroundcolor"
             name="backgroundcolor1"
@@ -232,6 +248,7 @@ export class Visualizer extends React.Component<IProps, IState> {
               label="Yellow"
             />
           </RadioGroup>
+          <UploadButtons onChange={this.loadStructure} />
         </Grid>
       </div>
     );
