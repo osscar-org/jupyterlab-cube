@@ -7,8 +7,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Slider from '@material-ui/core/Slider';
 import UploadButtons from './uploadbuttons';
-// import Button from '@material-ui/core/Button';
-// import Switch from '@material-ui/core/Switch';
+import Switch from '@material-ui/core/Switch';
 
 export interface IProps {
   data: string;
@@ -17,6 +16,7 @@ export interface IProps {
 export interface IState {
   filter?: string;
   value: string;
+  spin: boolean;
 }
 
 const marks1 = [
@@ -79,7 +79,7 @@ export class Visualizer extends React.Component<IProps, IState> {
 
     this.dark = true;
     this.uuid = _.uniqueId('ngl_');
-    this.state = { value: 'black' };
+    this.state = { value: 'black', spin: false };
 
     window.requestAnimationFrame(() => {
       NGL.DatasourceRegistry.add(
@@ -176,6 +176,11 @@ export class Visualizer extends React.Component<IProps, IState> {
     });
   };
 
+  toggleSpin = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    this.setState({ spin: event.target.checked });
+    this._stage.toggleSpin();
+  };
+
   render(): JSX.Element {
     return (
       <div className="container">
@@ -249,6 +254,12 @@ export class Visualizer extends React.Component<IProps, IState> {
             />
           </RadioGroup>
           <UploadButtons onChange={this.loadStructure} />
+          <Switch
+            checked={this.state.spin}
+            onChange={this.toggleSpin}
+            name="spin"
+            color="secondary"
+          />
         </Grid>
       </div>
     );
