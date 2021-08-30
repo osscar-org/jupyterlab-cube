@@ -39,6 +39,11 @@ class TestTest01():
 
     self.driver.save_screenshot("jupyterlab-extension3.png")
 
+    self.driver.find_element_by_xpath("//span[text()='Upload Structure']").click()
+    time.sleep(3)
+
+    self.driver.save_screenshot("jupyterlab-extension4.png")
+
 test = TestTest01()
 test.setup_method('Chrome')
 test.test_test01()
