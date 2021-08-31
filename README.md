@@ -60,3 +60,9 @@ jupyter lab build --minimize=False
 pip uninstall jupyterlab_cube
 jupyter labextension uninstall jupyterlab-cube
 ```
+
+# Acknowledgements
+
+We acknowledge support from the EPFL Open Science Fund via the [OSSCAR](http://www.osscar.org) project.
+
+<img src='http://www.osscar.org/wp-content/uploads/2019/03/OSSCAR-logo.png' width='230'>
