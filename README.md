@@ -4,6 +4,8 @@
 
 A JupyterLab extension for rendering cube files.
 
+![demo](./binder/demo.gif)
+
 ## Requirements
 
 * JupyterLab >= 3.0
