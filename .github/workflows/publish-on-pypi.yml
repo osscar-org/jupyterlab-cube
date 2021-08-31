@@ -33,7 +33,7 @@ jobs:
     - name: Install the node
       uses: actions/setup-node@v2
       with:
-        node-version: '15'
+        node-version: '16'
     - run: npm install
 
     - name: Create new tag
@@ -67,14 +67,4 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.PYPI_PASSWORD }}
-
-    - name: Publish package to NPM
-      uses: actions/setup-node@v2
-      with:
-        node-version: '15.14.0'
-        registry-url: 'https://registry.npmjs.org'
-    - run: npm install
-    - run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
