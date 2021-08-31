@@ -88,7 +88,7 @@ export class Visualizer extends React.Component<IProps, IState> {
   private uuid: string;
   private dark: boolean;
 
-  constructor(props: IProps, context: any) {
+  constructor(props: IProps, context: unknown) {
     super(props, context);
 
     this.dark = true;
