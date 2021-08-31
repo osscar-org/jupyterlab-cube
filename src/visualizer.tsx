@@ -2,12 +2,26 @@ import React from 'react';
 import * as NGL from '@osscar/ngl';
 import * as _ from 'underscore';
 import Grid from '@material-ui/core/Grid';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Slider from '@material-ui/core/Slider';
 import UploadButtons from './uploadbuttons';
 import Switch from '@material-ui/core/Switch';
+import { ColorPalette } from 'material-ui-color';
+
+const palette = {
+  black: 'black',
+  red: '#ff0000',
+  blue: '#0000ff',
+  green: '#00ff00',
+  yellow: 'yellow',
+  cyan: 'cyan',
+  lime: 'lime',
+  gray: 'gray',
+  orange: 'orange',
+  purple: 'purple',
+  white: 'white',
+  pink: 'pink',
+  darkblue: 'darkblue',
+};
 
 export interface IProps {
   data: string;
@@ -131,9 +145,8 @@ export class Visualizer extends React.Component<IProps, IState> {
     this.dark = !this.dark;
   };
 
-  handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    this._stage.setParameters({ backgroundColor: event.target.value });
-    this.setState({ value: event.target.value });
+  handlePaletteSelection = (color: unknown): void => {
+    this._stage.setParameters({ backgroundColor: String(color) });
   };
 
   valuetext(value: number): string {
@@ -237,22 +250,10 @@ export class Visualizer extends React.Component<IProps, IState> {
           alignItems="center"
           style={{ marginTop: '20px' }}
         >
-          <RadioGroup
-            aria-label="backgroundcolor"
-            name="backgroundcolor1"
-            value={this.state.value}
-            onChange={this.handleRadioChange}
-            row
-          >
-            <FormControlLabel value="black" control={<Radio />} label="Black" />
-            <FormControlLabel value="white" control={<Radio />} label="White" />
-            <FormControlLabel value="gray" control={<Radio />} label="Gray" />
-            <FormControlLabel
-              value="yellow"
-              control={<Radio />}
-              label="Yellow"
-            />
-          </RadioGroup>
+          <ColorPalette
+            palette={palette}
+            onSelect={this.handlePaletteSelection}
+          />
           <UploadButtons onChange={this.loadStructure} />
           <Switch
             checked={this.state.spin}
