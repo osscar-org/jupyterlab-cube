@@ -181,12 +181,18 @@ export class Visualizer extends React.Component<IProps, IState> {
   };
 
   loadStructure = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    this._stage.loadFile(event.target.files[0]).then((o: any) => {
-      o.addRepresentation('ball+stick', {
-        name: 'structure',
-        visible: true,
+    this._stage.removeComponent(
+      this._stage.getComponentsByName('struct').list[0]
+    );
+
+    this._stage
+      .loadFile(event.target.files[0], { name: 'struct' })
+      .then((o: any) => {
+        o.addRepresentation('ball+stick', {
+          name: 'structure',
+          visible: true,
+        });
       });
-    });
   };
 
   toggleSpin = (event: React.ChangeEvent<HTMLInputElement>): void => {
