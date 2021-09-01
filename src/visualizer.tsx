@@ -2,12 +2,26 @@ import React from 'react';
 import * as NGL from '@osscar/ngl';
 import * as _ from 'underscore';
 import Grid from '@material-ui/core/Grid';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Slider from '@material-ui/core/Slider';
-// import Button from '@material-ui/core/Button';
-// import Switch from '@material-ui/core/Switch';
+import UploadButtons from './uploadbuttons';
+import Switch from '@material-ui/core/Switch';
+import { ColorPalette } from 'material-ui-color';
+
+const palette = {
+  black: 'black',
+  red: '#ff0000',
+  blue: '#0000ff',
+  green: '#00ff00',
+  yellow: 'yellow',
+  cyan: 'cyan',
+  lime: 'lime',
+  gray: 'gray',
+  orange: 'orange',
+  purple: 'purple',
+  white: 'white',
+  pink: 'pink',
+  darkblue: 'darkblue',
+};
 
 export interface IProps {
   data: string;
@@ -16,9 +30,10 @@ export interface IProps {
 export interface IState {
   filter?: string;
   value: string;
+  spin: boolean;
 }
 
-const marks = [
+const marks1 = [
   {
     value: 0,
     label: '0%',
@@ -45,17 +60,40 @@ const marks = [
   },
 ];
 
+const marks2 = [
+  {
+    value: -0.02,
+    label: '-0.02',
+  },
+  {
+    value: -0.01,
+    label: '-0.01',
+  },
+  {
+    value: 0,
+    label: '0',
+  },
+  {
+    value: 0.01,
+    label: '0.01',
+  },
+  {
+    value: 0.02,
+    label: '0.02',
+  },
+];
+
 export class Visualizer extends React.Component<IProps, IState> {
   private _stage: any;
   private uuid: string;
   private dark: boolean;
 
-  constructor(props: IProps, context: any) {
+  constructor(props: IProps, context: unknown) {
     super(props, context);
 
     this.dark = true;
     this.uuid = _.uniqueId('ngl_');
-    this.state = { value: 'black' };
+    this.state = { value: 'black', spin: false };
 
     window.requestAnimationFrame(() => {
       NGL.DatasourceRegistry.add(
@@ -107,9 +145,8 @@ export class Visualizer extends React.Component<IProps, IState> {
     this.dark = !this.dark;
   };
 
-  handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    this._stage.setParameters({ backgroundColor: event.target.value });
-    this.setState({ value: event.target.value });
+  handlePaletteSelection = (color: unknown): void => {
+    this._stage.setParameters({ backgroundColor: String(color) });
   };
 
   valuetext(value: number): string {
@@ -127,6 +164,34 @@ export class Visualizer extends React.Component<IProps, IState> {
     this._stage
       .getRepresentationsByName('negative_surface')
       .setParameters({ opacity: transparency });
+  };
+
+  handleIsovalueChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number | number[]
+  ): void => {
+    const val = value as number[];
+
+    this._stage
+      .getRepresentationsByName('positive_surface')
+      .setParameters({ isolevel: val[1] });
+    this._stage
+      .getRepresentationsByName('negative_surface')
+      .setParameters({ isolevel: val[0] });
+  };
+
+  loadStructure = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    this._stage.loadFile(event.target.files[0]).then((o: any) => {
+      o.addRepresentation('ball+stick', {
+        name: 'structure',
+        visible: true,
+      });
+    });
+  };
+
+  toggleSpin = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    this.setState({ spin: event.target.checked });
+    this._stage.toggleSpin();
   };
 
   render(): JSX.Element {
@@ -157,29 +222,45 @@ export class Visualizer extends React.Component<IProps, IState> {
               aria-labelledby="vertical-slider"
               min={0}
               max={100}
-              marks={marks}
+              marks={marks1}
               onChange={this.handleOpacityChange}
               color={'primary'}
             />
           </Grid>
-        </Grid>
-        <Grid container direction="row" justify="center" alignItems="center">
-          <RadioGroup
-            aria-label="backgroundcolor"
-            name="backgroundcolor1"
-            value={this.state.value}
-            onChange={this.handleRadioChange}
-            row
-          >
-            <FormControlLabel value="black" control={<Radio />} label="Black" />
-            <FormControlLabel value="white" control={<Radio />} label="White" />
-            <FormControlLabel value="gray" control={<Radio />} label="Gray" />
-            <FormControlLabel
-              value="yellow"
-              control={<Radio />}
-              label="Yellow"
+          <Grid item sm={1}>
+            <Slider
+              orientation="vertical"
+              defaultValue={[0.01, -0.01]}
+              aria-labelledby="vertical-slider"
+              getAriaValueText={this.valuetext}
+              valueLabelDisplay="on"
+              marks={marks2}
+              min={-0.02}
+              max={0.02}
+              step={0.001}
+              onChange={this.handleIsovalueChange}
+              color={'secondary'}
             />
-          </RadioGroup>
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+          style={{ marginTop: '20px' }}
+        >
+          <ColorPalette
+            palette={palette}
+            onSelect={this.handlePaletteSelection}
+          />
+          <UploadButtons onChange={this.loadStructure} />
+          <Switch
+            checked={this.state.spin}
+            onChange={this.toggleSpin}
+            name="spin"
+            color="secondary"
+          />
         </Grid>
       </div>
     );
