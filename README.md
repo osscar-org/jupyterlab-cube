@@ -5,9 +5,9 @@
 ## Try it with Binder
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/jupyterlab-cube/develop?urlpath=lab)
 
-A JupyterLab extension for rendering Gaussian cube files. Gaussian cube file
-describes volumetric data for molecular and material systems. It can be used
-to store data for electron densities and molecular orbitals.
+A JupyterLab extension for rendering [Gaussian cube files](http://paulbourke.net/dataformats/cube). 
+Gaussian cube file describes volumetric data for molecular and material systems. 
+It can be used to store data for electron densities and molecular orbitals.
 
 This extension is a JupyterLab Gaussian cube file renderer. By double clicking
 the cube files in the JupyterLab file browser, it will show the cube file
