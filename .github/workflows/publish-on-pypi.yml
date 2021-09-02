@@ -69,6 +69,7 @@ jobs:
         password: ${{ secrets.PYPI_PASSWORD }}
 
   publish_npm:
+    needs: publish_pypi
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
