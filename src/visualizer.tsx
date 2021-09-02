@@ -6,6 +6,9 @@ import Slider from '@material-ui/core/Slider';
 import UploadButtons from './uploadbuttons';
 import Switch from '@material-ui/core/Switch';
 import { ColorPalette } from 'material-ui-color';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const palette = {
   black: 'black',
@@ -93,7 +96,7 @@ export class Visualizer extends React.Component<IProps, IState> {
 
     this.dark = true;
     this.uuid = _.uniqueId('ngl_');
-    this.state = { value: 'black', spin: false };
+    this.state = { value: 'perspective', spin: false };
 
     window.requestAnimationFrame(() => {
       NGL.DatasourceRegistry.add(
@@ -104,7 +107,10 @@ export class Visualizer extends React.Component<IProps, IState> {
       );
 
       // Create NGL Stage object
-      this._stage = new NGL.Stage(this.uuid, { quality: 'high' });
+      this._stage = new NGL.Stage(this.uuid, {
+        quality: 'high',
+        cameraType: 'perspective',
+      });
 
       const data = this.props.data;
       const stringBlob = new Blob([data], { type: 'text/plain' });
@@ -200,6 +206,11 @@ export class Visualizer extends React.Component<IProps, IState> {
     this._stage.toggleSpin();
   };
 
+  toggleCameraType = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    this.setState({ value: event.target.value });
+    this._stage.setParameters({ cameraType: event.target.value });
+  };
+
   render(): JSX.Element {
     return (
       <div className="container">
@@ -207,14 +218,14 @@ export class Visualizer extends React.Component<IProps, IState> {
           container
           spacing={3}
           justify="center"
-          style={{ marginTop: '20px' }}
+          style={{ marginTop: '10px' }}
         >
           <Grid item sm={8}>
             <div
               id={this.uuid}
               style={{
                 width: '100%',
-                height: '400px',
+                height: '380px',
                 backgroundColor: 'black',
               }}
             ></div>
@@ -267,6 +278,37 @@ export class Visualizer extends React.Component<IProps, IState> {
             name="spin"
             color="secondary"
           />
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+          style={{ marginTop: '10px' }}
+        >
+          <RadioGroup
+            aria-label="camera"
+            name="camera"
+            value={this.state.value}
+            onChange={this.toggleCameraType}
+            row
+          >
+            <FormControlLabel
+              value="perspective"
+              control={<Radio />}
+              label="Perspective"
+            />
+            <FormControlLabel
+              value="orthographic"
+              control={<Radio />}
+              label="Orthographic"
+            />
+            <FormControlLabel
+              value="stereo"
+              control={<Radio />}
+              label="Stereo"
+            />
+          </RadioGroup>
         </Grid>
       </div>
     );

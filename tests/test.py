@@ -51,6 +51,9 @@ class TestTest01():
       time.sleep(1)
       self.driver.save_screenshot("jupyterlab-extension"+str(i)+".png")
 
+    self.driver.find_element_by_xpath("//span[text()='Stereo']").click()
+    self.driver.save_screenshot("jupyterlab-extension10.png")
+
 test = TestTest01()
 test.setup_method('Chrome')
 test.test_test01()
