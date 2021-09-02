@@ -272,11 +272,17 @@ export class Visualizer extends React.Component<IProps, IState> {
             onSelect={this.handlePaletteSelection}
           />
           <UploadButtons onChange={this.loadStructure} />
-          <Switch
-            checked={this.state.spin}
-            onChange={this.toggleSpin}
-            name="spin"
-            color="secondary"
+          <FormControlLabel
+            value="spin"
+            control={
+              <Switch
+                checked={this.state.spin}
+                onChange={this.toggleSpin}
+                name="spin"
+                color="secondary"
+              />
+            }
+            label="Spin"
           />
         </Grid>
         <Grid
