@@ -1,6 +1,9 @@
-# jupyterlab_cube
+# jupyterlab-cube
 
-![Github Actions Status](https://github.com/osscar-org/jupyterlab-cube/workflows/Build/badge.svg)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/jupyterlab-cube/develop?urlpath=lab)
+![Github Actions Status](https://github.com/osscar-org/jupyterlab-cube/workflows/Build/badge.svg)
+
+## Try it with Binder
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/jupyterlab-cube/develop?urlpath=lab)
 
 A JupyterLab extension for rendering cube files.
 
@@ -13,7 +16,7 @@ A JupyterLab extension for rendering cube files.
 ## Install
 
 ```bash
-pip install jupyterlab_cube
+pip install jupyterlab-cube
 ```
 
 ## Contributing
