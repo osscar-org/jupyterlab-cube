@@ -1,6 +1,8 @@
 # jupyterlab-cube
 
 ![Github Actions Status](https://github.com/osscar-org/jupyterlab-cube/workflows/Build/badge.svg)
+[![npm version](https://badge.fury.io/js/jupyterlab-cube.svg)](https://badge.fury.io/js/jupyterlab-cube)
+[![PyPI version](https://badge.fury.io/py/jupyterlab-cube.svg)](https://badge.fury.io/py/jupyterlab-cube)
 
 ## Try it with Binder
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/jupyterlab-cube/develop?urlpath=lab)
