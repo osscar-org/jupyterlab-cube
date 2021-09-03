@@ -33,7 +33,12 @@ export default function UploadButtons(Props: IInputPros): JSX.Element {
         onChange={Props.onChange}
       />
       <label htmlFor="contained-button-file">
-        <Button variant="contained" color="primary" component="span">
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          component="span"
+        >
           Upload Structure
         </Button>
       </label>

@@ -112,6 +112,10 @@ export class Visualizer extends React.Component<IProps, IState> {
         cameraType: 'perspective',
       });
 
+      this._stage.viewer.container.addEventListener('dblclick', () => {
+        this._stage.toggleFullscreen();
+      });
+
       const data = this.props.data;
       const stringBlob = new Blob([data], { type: 'text/plain' });
 
