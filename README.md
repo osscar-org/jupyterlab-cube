@@ -1,4 +1,4 @@
-# jupyterlab-cube
+# **jupyterlab-cube**: A JupyterLab Renderer for Gaussian Cube Files
 
 ![Github Actions Status](https://github.com/osscar-org/jupyterlab-cube/workflows/Build/badge.svg)
 [![npm version](https://badge.fury.io/js/jupyterlab-cube.svg)](https://badge.fury.io/js/jupyterlab-cube)
