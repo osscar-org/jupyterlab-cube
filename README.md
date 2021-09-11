@@ -7,6 +7,7 @@
 ## Try it with Binder
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/jupyterlab-cube/develop?urlpath=lab)
+(The example of the cube file is in the "binder" folder)
 
 A JupyterLab extension for rendering [Gaussian cube
 files](http://paulbourke.net/dataformats/cube). Gaussian cube file describes
