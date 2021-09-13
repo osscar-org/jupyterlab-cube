@@ -4,11 +4,6 @@
 [![npm version](https://badge.fury.io/js/jupyterlab-cube.svg)](https://badge.fury.io/js/jupyterlab-cube)
 [![PyPI version](https://badge.fury.io/py/jupyterlab-cube.svg)](https://badge.fury.io/py/jupyterlab-cube)
 
-## Try it with Binder
-
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/jupyterlab-cube/develop?urlpath=lab)
-(The example of the cube file is in the "binder" folder)
-
 A JupyterLab extension for rendering [Gaussian cube
 files](http://paulbourke.net/dataformats/cube). Gaussian cube file describes
 volumetric data for molecular and material systems. It can be used to store
@@ -19,6 +14,11 @@ the cube files in the JupyterLab file browser, it will show the cube file in a
 [NGL](https://github.com/nglviewer/ngl) visualizer.
 
 ![demo](./binder/demo.gif)
+
+## Try it with Binder
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/jupyterlab-cube/develop?urlpath=lab)
+(The example of the cube file is in the "binder" folder)
 
 ## Requirements
 
