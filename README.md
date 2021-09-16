@@ -17,7 +17,8 @@ the cube files in the JupyterLab file browser, it will show the cube file in a
 
 ## Try it with Binder
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/jupyterlab-cube/develop?urlpath=lab)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/jupyterlab-cube/develop?urlpath=%2Flab%2Ftree%2Fbinder%2Fbenzene-homo.cube)
+
 (The example of the cube file is in the "binder" folder)
 
 ## Requirements
