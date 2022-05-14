@@ -1,12 +1,8 @@
-# jupyterlab-cube
+# **jupyterlab-cube**: A JupyterLab Renderer for Gaussian Cube Files
 
 ![Github Actions Status](https://github.com/osscar-org/jupyterlab-cube/workflows/Build/badge.svg)
 [![npm version](https://badge.fury.io/js/jupyterlab-cube.svg)](https://badge.fury.io/js/jupyterlab-cube)
 [![PyPI version](https://badge.fury.io/py/jupyterlab-cube.svg)](https://badge.fury.io/py/jupyterlab-cube)
-
-## Try it with Binder
-
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/jupyterlab-cube/develop?urlpath=lab)
 
 A JupyterLab extension for rendering [Gaussian cube
 files](http://paulbourke.net/dataformats/cube). Gaussian cube file describes
@@ -18,6 +14,12 @@ the cube files in the JupyterLab file browser, it will show the cube file in a
 [NGL](https://github.com/nglviewer/ngl) visualizer.
 
 ![demo](./binder/demo.gif)
+
+## Try it with Binder
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/osscar-org/jupyterlab-cube/develop?urlpath=%2Flab%2Ftree%2Fbinder%2Fbenzene-homo.cube)
+
+(The example of the cube file is in the "binder" folder)
 
 ## Requirements
 
