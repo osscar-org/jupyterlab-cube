@@ -51,7 +51,7 @@
     "@osscar/ngl": "2.0.0-dev.38",
     "jquery": "3.6.0",
     "react-dom": "18.0.0",
-    "underscore": "1.13.3"
+    "underscore": "1.13.6"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.4.2",
