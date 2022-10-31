@@ -56,7 +56,7 @@
   "devDependencies": {
     "@jupyterlab/builder": "^3.4.2",
     "@types/jquery": "3.5.14",
-    "@types/react-dom": "18.0.4",
+    "@types/react-dom": "18.0.8",
     "@types/underscore": "1.11.4",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
