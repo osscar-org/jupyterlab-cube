@@ -49,7 +49,7 @@
     "@material-ui/icons": "4.11.3",
     "material-ui-color": "1.2.0",
     "@osscar/ngl": "2.0.0-dev.38",
-    "jquery": "3.6.0",
+    "jquery": "3.6.2",
     "react-dom": "18.0.0",
     "underscore": "1.13.3"
   },
