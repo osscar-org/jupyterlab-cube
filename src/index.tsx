@@ -17,6 +17,29 @@ const MIME_TYPE = 'application/osscar.cube';
 const CLASS_NAME = 'mimerenderer-cube';
 
 /**
+ * Detect the current JupyterLab theme.
+ * JupyterLab 4 sets data-jp-theme-light="true"|"false" on <body>.
+ * JupyterLab 3 adds a jp-theme-dark CSS class on <body>.
+ */
+function detectJupyterLabTheme(): string {
+  // JupyterLab 4: body has data-jp-theme-light attribute
+  const themeLight = document.body.getAttribute('data-jp-theme-light');
+  if (themeLight === 'false') {
+    return 'dark';
+  }
+  if (themeLight === 'true') {
+    return 'light';
+  }
+
+  // JupyterLab 3: body has jp-theme-dark CSS class
+  if (document.body.classList.contains('jp-theme-dark')) {
+    return 'dark';
+  }
+
+  return 'light';
+}
+
+/**
  * A widget for rendering cube.
  */
 export class CubeFileRenderer extends Widget implements IRenderMime.IRenderer {
@@ -34,11 +57,16 @@ export class CubeFileRenderer extends Widget implements IRenderMime.IRenderer {
    */
   renderModel(model: IRenderMime.IMimeModel): Promise<void> {
     const data = model.data[this._mimeType] as string;
+    const theme = detectJupyterLabTheme();
 
     return new Promise<void>((resolve, reject) => {
-      ReactDOM.render(<Visualizer data={data} />, this.node, () => {
-        resolve();
-      });
+      ReactDOM.render(
+        <Visualizer data={data} theme={theme} />,
+        this.node,
+        () => {
+          resolve();
+        }
+      );
     });
   }
 
@@ -51,7 +79,7 @@ export class CubeFileRenderer extends Widget implements IRenderMime.IRenderer {
 export const rendererFactory: IRenderMime.IRendererFactory = {
   safe: true,
   mimeTypes: [MIME_TYPE],
-  createRenderer: (options) => new CubeFileRenderer(options),
+  createRenderer: (options) => new CubeFileRenderer(options)
 };
 
 /**
@@ -67,15 +95,15 @@ const extension: IRenderMime.IExtension = {
       name: 'cube',
       mimeTypes: [MIME_TYPE],
       extensions: ['.cube', '.cub'],
-      iconClass: 'jp-MaterialIcon jp-CubeIcon',
-    },
+      iconClass: 'jp-MaterialIcon jp-CubeIcon'
+    }
   ],
   documentWidgetFactoryOptions: {
     name: 'cube viewer',
     primaryFileType: 'cube',
     fileTypes: ['cube'],
-    defaultFor: ['cube'],
-  },
+    defaultFor: ['cube']
+  }
 };
 
 export default extension;

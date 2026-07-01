@@ -8,14 +8,16 @@
   background-position: center;
 }
 
-.slider-div {
-  width: 60%;
-  margin-left: auto;
-  margin-right: auto;
+/* MIME renderer widget container */
+.jp-ReactWidget.mimerenderer-cube {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
 }
 
-.form-group {
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
+/* NGL canvas sizing */
+.mimerenderer-cube canvas {
+  max-width: 100%;
+  max-height: 100%;
 }

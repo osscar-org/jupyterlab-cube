@@ -27,6 +27,7 @@
   "scripts": {
     "build": "jlpm run build:lib && jlpm run build:labextension:dev",
     "build:prod": "jlpm run clean && jlpm run build:lib && jlpm run build:labextension",
+    "build:fast": "tsc --sourceMap && jupyter labextension build --development True .",
     "build:labextension": "jupyter labextension build .",
     "build:labextension:dev": "jupyter labextension build --development True .",
     "build:lib": "tsc",
@@ -44,19 +45,19 @@
   },
   "dependencies": {
     "@jupyterlab/rendermime-interfaces": "^3.4.2",
-    "@lumino/widgets": "^1.32.0",
+    "@lumino/widgets": "^2.0.0",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
-    "material-ui-color": "1.2.0",
     "@osscar/ngl": "2.0.0-dev.38",
     "jquery": "3.6.0",
-    "react-dom": "18.0.0",
+    "react-dom": "^18.2.0",
     "underscore": "1.13.3"
   },
   "devDependencies": {
-    "@jupyterlab/builder": "^3.4.2",
+    "@jupyterlab/builder": "^4.0.0",
     "@types/jquery": "3.5.14",
-    "@types/react-dom": "18.0.4",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
     "@types/underscore": "1.11.4",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",

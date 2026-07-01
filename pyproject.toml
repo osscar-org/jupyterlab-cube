@@ -1,17 +1,63 @@
 [build-system]
-requires = ["jupyter_packaging~=0.12.0,<2", "jupyterlab~=3.4"]
-build-backend = "jupyter_packaging.build_api"
+requires = ["hatchling>=1.5.0", "jupyterlab>=4.0.0,<5", "hatch-nodejs-version", "hatch-jupyter-builder>=0.5"]
+build-backend = "hatchling.build"
 
-[tool.jupyter-packaging.options]
-skip-if-exists = ["jupyterlab_cube/labextension/package.json"]
-ensured-targets = ["jupyterlab_cube/labextension/package.json"]
+[project]
+name = "jupyterlab_cube"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "Framework :: Jupyter",
+    "Framework :: Jupyter :: JupyterLab",
+    "Framework :: Jupyter :: JupyterLab :: 4",
+    "Framework :: Jupyter :: JupyterLab :: Extensions",
+    "Framework :: Jupyter :: JupyterLab :: Extensions :: Prebuilt",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+]
+dynamic = ["version", "description", "authors", "urls", "keywords"]
 
-[tool.jupyter-packaging.builder]
-factory = "jupyter_packaging.npm_builder"
+[tool.hatch.version]
+source = "nodejs"
 
-[tool.jupyter-packaging.build-args]
+[tool.hatch.metadata.hooks.nodejs]
+fields = ["description", "authors", "urls"]
+
+[tool.hatch.build.targets.sdist]
+artifacts = ["jupyterlab_cube/labextension"]
+exclude = [".github", "binder"]
+
+[tool.hatch.build.targets.wheel.shared-data]
+"jupyterlab_cube/labextension" = "share/jupyter/labextensions/jupyterlab-cube"
+"install.json" = "share/jupyter/labextensions/jupyterlab-cube/install.json"
+
+[tool.hatch.build.hooks.version]
+path = "jupyterlab_cube/_version.py"
+
+[tool.hatch.build.hooks.jupyter-builder]
+dependencies = ["hatch-jupyter-builder>=0.5"]
+build-function = "hatch_jupyter_builder.npm_builder"
+ensured-targets = [
+    "jupyterlab_cube/labextension/static/style.js",
+    "jupyterlab_cube/labextension/package.json",
+]
+skip-if-exists = ["jupyterlab_cube/labextension/static/style.js"]
+
+[tool.hatch.build.hooks.jupyter-builder.build-kwargs]
 build_cmd = "build:prod"
 npm = ["jlpm"]
 
-[tool.check-manifest]
-ignore = ["jupyterlab_cube/labextension/**", "yarn.lock", ".*", "package-lock.json"]
+[tool.hatch.build.hooks.jupyter-builder.editable-build-kwargs]
+build_cmd = "build:fast"
+npm = ["npm"]
+source_dir = "src"
+build_dir = "jupyterlab_cube/labextension"
