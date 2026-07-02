@@ -100,7 +100,7 @@ export class Visualizer extends React.Component<IProps, IState> {
     const isDark = props.theme === 'dark';
     const initialBg = isDark ? '#1a1a2e' : 'white';
 
-    this._currentDirectory = window.location.origin + URLExt.join(
+    this._currentDirectory = URLExt.join(
       PageConfig.getBaseUrl(),
       'files',
       '/'
@@ -164,46 +164,64 @@ export class Visualizer extends React.Component<IProps, IState> {
   }
 
   handleOpacityChange = (
-    event: React.ChangeEvent<unknown>,
+    _event: React.ChangeEvent<unknown>,
     value: number | number[]
   ): void => {
-    const transparency = (value as number) / 100.0;
-    this.setState({ opacity: value as number });
-    this._stage
-      .getRepresentationsByName('positive_surface')
-      .setParameters({ opacity: transparency });
-    this._stage
-      .getRepresentationsByName('negative_surface')
-      .setParameters({ opacity: transparency });
+    const val = value as number;
+    const transparency = val / 100.0;
+    this.setState({ opacity: val });
+    if (this._stage) {
+      this._stage
+        .getRepresentationsByName('positive_surface')
+        .setParameters({ opacity: transparency });
+      this._stage
+        .getRepresentationsByName('negative_surface')
+        .setParameters({ opacity: transparency });
+    }
   };
 
   handleIsovalueChange = (
-    event: React.ChangeEvent<unknown>,
+    _event: React.ChangeEvent<unknown>,
     value: number | number[]
   ): void => {
     const val = value as number;
     this.setState({ isovalue: val });
-    this._stage
-      .getRepresentationsByName('positive_surface')
-      .setParameters({ isolevel: val });
-    this._stage
-      .getRepresentationsByName('negative_surface')
-      .setParameters({ isolevel: -val });
+    if (this._stage) {
+      this._stage
+        .getRepresentationsByName('positive_surface')
+        .setParameters({ isolevel: val });
+      this._stage
+        .getRepresentationsByName('negative_surface')
+        .setParameters({ isolevel: -val });
+    }
   };
 
   loadStructure = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    if (!this._stage) {
+      console.warn('Cube viewer: NGL stage not ready yet');
+      return;
+    }
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+
     const existing = this._stage.getComponentsByName('struct');
     if (existing && existing.list && existing.list[0]) {
       this._stage.removeComponent(existing.list[0]);
     }
 
     this._stage
-      .loadFile(event.target.files[0], { name: 'struct' })
+      .loadFile(file, { name: 'struct' })
       .then((o: any) => {
         o.addRepresentation('ball+stick', {
           name: 'structure',
           visible: true
         });
+        o.autoView();
+      })
+      .catch((err: any) => {
+        console.error('Cube viewer: failed to load uploaded structure:', err);
       });
   };
 
@@ -260,7 +278,7 @@ export class Visualizer extends React.Component<IProps, IState> {
   componentDidMount(): void {
     // Set the initial directory from the current file-browser path
     const initialPath = getCurrentPath();
-    this._currentDirectory = window.location.origin + URLExt.join(
+    this._currentDirectory = URLExt.join(
       PageConfig.getBaseUrl(),
       'files',
       initialPath ? initialPath + '/' : '/'
@@ -269,7 +287,7 @@ export class Visualizer extends React.Component<IProps, IState> {
 
     // Keep it in sync as the user navigates
     this._pathChangeHandler = (newPath: string) => {
-      this._currentDirectory = window.location.origin + URLExt.join(
+      this._currentDirectory = URLExt.join(
         PageConfig.getBaseUrl(),
         'files',
         newPath ? newPath + '/' : '/'
@@ -309,7 +327,7 @@ export class Visualizer extends React.Component<IProps, IState> {
 
     // Always sync to the latest file-browser directory before loading
     const currentPath = getCurrentPath();
-    this._currentDirectory = window.location.origin + URLExt.join(
+    this._currentDirectory = URLExt.join(
       PageConfig.getBaseUrl(),
       'files',
       currentPath ? currentPath + '/' : '/'

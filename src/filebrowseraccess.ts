@@ -19,6 +19,10 @@ export function setFileBrowser(browser: IDefaultFileBrowser): void {
   _browser = browser;
   _currentPath = browser.model.path;
 
+  // Notify all listeners of the initial path so components that
+  // mounted before the browser was captured can update.
+  _listeners.forEach(fn => fn(_currentPath));
+
   browser.model.pathChanged.connect((_sender, args) => {
     _currentPath = args.newValue;
     _listeners.forEach(fn => fn(_currentPath));

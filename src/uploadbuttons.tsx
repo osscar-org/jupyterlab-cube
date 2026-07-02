@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
@@ -19,29 +19,34 @@ interface IInputPros {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function UploadButtons(Props: IInputPros): JSX.Element {
+export default function UploadButtons(props: IInputPros): JSX.Element {
   const classes = useStyles();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleClick = (): void => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
 
   return (
     <div className={classes.root}>
       <input
+        ref={fileInputRef}
         accept=".pdb, .cif, .ent, .gz, .sdf"
         className={classes.input}
-        id="contained-button-file"
         multiple
         type="file"
-        onChange={Props.onChange}
+        onChange={props.onChange}
       />
-      <label htmlFor="contained-button-file">
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          component="span"
-        >
-          Upload Structure
-        </Button>
-      </label>
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        onClick={handleClick}
+      >
+        Upload Structure
+      </Button>
     </div>
   );
 }
