@@ -100,8 +100,9 @@ export class Visualizer extends React.Component<IProps, IState> {
     const isDark = props.theme === 'dark';
     const initialBg = isDark ? '#1a1a2e' : 'white';
 
-    this._currentDirectory = URLExt.join(
-      PageConfig.getBaseUrl() + '/files',
+    this._currentDirectory = window.location.origin + URLExt.join(
+      PageConfig.getBaseUrl(),
+      'files',
       '/'
     );
 
@@ -259,16 +260,18 @@ export class Visualizer extends React.Component<IProps, IState> {
   componentDidMount(): void {
     // Set the initial directory from the current file-browser path
     const initialPath = getCurrentPath();
-    this._currentDirectory = URLExt.join(
-      PageConfig.getBaseUrl() + '/files',
+    this._currentDirectory = window.location.origin + URLExt.join(
+      PageConfig.getBaseUrl(),
+      'files',
       initialPath ? initialPath + '/' : '/'
     );
     this.updateDatasource();
 
     // Keep it in sync as the user navigates
     this._pathChangeHandler = (newPath: string) => {
-      this._currentDirectory = URLExt.join(
-        PageConfig.getBaseUrl() + '/files',
+      this._currentDirectory = window.location.origin + URLExt.join(
+        PageConfig.getBaseUrl(),
+        'files',
         newPath ? newPath + '/' : '/'
       );
       this.updateDatasource();
@@ -284,22 +287,31 @@ export class Visualizer extends React.Component<IProps, IState> {
 
   /**
    * Update the NGL datasource to point to a directory on the Jupyter server.
+   * Clears any previous 'data' datasource to avoid stale base URLs.
    */
   updateDatasource = (): void => {
+    // Registry.add replaces by key, so each call overwrites the previous URL
     NGL.DatasourceRegistry.add(
       'data',
       new NGL.StaticDatasource(this._currentDirectory)
     );
+    console.log('Cube viewer: datasource set to', this._currentDirectory);
   };
 
   /**
    * Load a structure file from the server via the NGL data:// protocol.
    */
   addStructure = (filename: string): void => {
+    if (!this._stage) {
+      console.warn('Cube viewer: NGL stage not ready yet');
+      return;
+    }
+
     // Always sync to the latest file-browser directory before loading
     const currentPath = getCurrentPath();
-    this._currentDirectory = URLExt.join(
-      PageConfig.getBaseUrl() + '/files',
+    this._currentDirectory = window.location.origin + URLExt.join(
+      PageConfig.getBaseUrl(),
+      'files',
       currentPath ? currentPath + '/' : '/'
     );
     this.updateDatasource();
@@ -309,13 +321,20 @@ export class Visualizer extends React.Component<IProps, IState> {
       this._stage.removeComponent(existing.list[0]);
     }
 
+    console.log('Cube viewer: loading structure file:', filename, 'from', this._currentDirectory);
+
     this._stage
       .loadFile('data://' + filename, { name: 'struct' })
       .then((o: any) => {
+        console.log('Cube viewer: structure file loaded successfully');
         o.addRepresentation('ball+stick', {
           name: 'structure',
           visible: true
         });
+        o.autoView();
+      })
+      .catch((err: any) => {
+        console.error('Cube viewer: failed to load structure file:', err);
       });
   };
 
