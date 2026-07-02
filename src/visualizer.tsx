@@ -2,6 +2,8 @@ import React from 'react';
 import * as NGL from '@osscar/ngl';
 import * as _ from 'underscore';
 
+import { PageConfig, URLExt } from '@jupyterlab/coreutils';
+
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -21,6 +23,8 @@ import ImageIcon from '@material-ui/icons/Image';
 import GrainIcon from '@material-ui/icons/Grain';
 
 import UploadButtons from './uploadbuttons';
+import StructureSelector from './structureselector';
+import { onPathChange, offPathChange, getCurrentPath } from './filebrowseraccess';
 
 /**
  * Background color swatches matching the mol-visualizer pattern.
@@ -85,6 +89,8 @@ export interface IState {
 export class Visualizer extends React.Component<IProps, IState> {
   private _stage: any;
   private uuid: string;
+  private _currentDirectory: string;
+  private _pathChangeHandler: ((path: string) => void) | null = null;
 
   constructor(props: IProps, context: unknown) {
     super(props, context);
@@ -93,6 +99,11 @@ export class Visualizer extends React.Component<IProps, IState> {
 
     const isDark = props.theme === 'dark';
     const initialBg = isDark ? '#1a1a2e' : 'white';
+
+    this._currentDirectory = URLExt.join(
+      PageConfig.getBaseUrl() + '/files',
+      '/'
+    );
 
     this.state = {
       spin: false,
@@ -105,9 +116,7 @@ export class Visualizer extends React.Component<IProps, IState> {
     window.requestAnimationFrame(() => {
       NGL.DatasourceRegistry.add(
         'data',
-        new NGL.StaticDatasource(
-          '//cdn.rawgit.com/arose/ngl/v2.0.0-dev.32/data/'
-        )
+        new NGL.StaticDatasource(this._currentDirectory)
       );
 
       // Create NGL Stage object
@@ -240,6 +249,73 @@ export class Visualizer extends React.Component<IProps, IState> {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+      });
+  };
+
+  /**
+   * Subscribe to file-browser path changes so the datasource stays
+   * in sync with the directory the user is browsing.
+   */
+  componentDidMount(): void {
+    // Set the initial directory from the current file-browser path
+    const initialPath = getCurrentPath();
+    this._currentDirectory = URLExt.join(
+      PageConfig.getBaseUrl() + '/files',
+      initialPath ? initialPath + '/' : '/'
+    );
+    this.updateDatasource();
+
+    // Keep it in sync as the user navigates
+    this._pathChangeHandler = (newPath: string) => {
+      this._currentDirectory = URLExt.join(
+        PageConfig.getBaseUrl() + '/files',
+        newPath ? newPath + '/' : '/'
+      );
+      this.updateDatasource();
+    };
+    onPathChange(this._pathChangeHandler);
+  }
+
+  componentWillUnmount(): void {
+    if (this._pathChangeHandler) {
+      offPathChange(this._pathChangeHandler);
+    }
+  }
+
+  /**
+   * Update the NGL datasource to point to a directory on the Jupyter server.
+   */
+  updateDatasource = (): void => {
+    NGL.DatasourceRegistry.add(
+      'data',
+      new NGL.StaticDatasource(this._currentDirectory)
+    );
+  };
+
+  /**
+   * Load a structure file from the server via the NGL data:// protocol.
+   */
+  addStructure = (filename: string): void => {
+    // Always sync to the latest file-browser directory before loading
+    const currentPath = getCurrentPath();
+    this._currentDirectory = URLExt.join(
+      PageConfig.getBaseUrl() + '/files',
+      currentPath ? currentPath + '/' : '/'
+    );
+    this.updateDatasource();
+
+    const existing = this._stage.getComponentsByName('struct');
+    if (existing && existing.list && existing.list[0]) {
+      this._stage.removeComponent(existing.list[0]);
+    }
+
+    this._stage
+      .loadFile('data://' + filename, { name: 'struct' })
+      .then((o: any) => {
+        o.addRepresentation('ball+stick', {
+          name: 'structure',
+          visible: true
+        });
       });
   };
 
@@ -556,7 +632,7 @@ export class Visualizer extends React.Component<IProps, IState> {
                 </div>
               </Paper>
 
-              {/* Structure Upload Section */}
+              {/* File Selection Section */}
               <Paper
                 elevation={isDark ? 2 : 1}
                 style={{
@@ -576,9 +652,14 @@ export class Visualizer extends React.Component<IProps, IState> {
                     fontWeight: 600
                   }}
                 >
-                  Structure
+                  File Selection
                 </Typography>
-                <UploadButtons onChange={this.loadStructure} />
+                <StructureSelector
+                  onSelectFile={this.addStructure}
+                />
+                <Box mt={1.5}>
+                  <UploadButtons onChange={this.loadStructure} />
+                </Box>
               </Paper>
 
               {/* Tip */}

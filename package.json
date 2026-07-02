@@ -44,12 +44,17 @@
     "watch:labextension": "jupyter labextension watch ."
   },
   "dependencies": {
+    "@jupyterlab/application": "^4.6.1",
+    "@jupyterlab/coreutils": "^6.0.0",
+    "@jupyterlab/filebrowser": "^4.6.1",
     "@jupyterlab/rendermime-interfaces": "^3.4.2",
     "@lumino/widgets": "^2.0.0",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
+    "@material-ui/lab": "4.0.0-alpha.61",
     "@osscar/ngl": "2.0.0-dev.38",
     "jquery": "3.6.0",
+    "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "underscore": "1.13.3"
   },
@@ -67,12 +72,13 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
-    "typescript": "~4.3.5"
+    "typescript": "~5.0.0"
   },
   "sideEffects": [
     "style/*.css"
   ],
   "jupyterlab": {
+    "extension": "lib/plugin.js",
     "mimeExtension": true,
     "outputDir": "jupyterlab_cube/labextension"
   }

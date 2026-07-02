@@ -83,7 +83,7 @@ export const rendererFactory: IRenderMime.IRendererFactory = {
 };
 
 /**
- * Extension definition.
+ * MIME renderer extension definition.
  */
 const extension: IRenderMime.IExtension = {
   id: 'jupyterlab-cube:plugin',
