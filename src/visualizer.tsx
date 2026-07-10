@@ -91,6 +91,7 @@ export class Visualizer extends React.Component<IProps, IState> {
   private uuid: string;
   private _currentDirectory: string;
   private _pathChangeHandler: ((path: string) => void) | null = null;
+  private _resizeObserver: ResizeObserver | null = null;
 
   constructor(props: IProps, context: unknown) {
     super(props, context);
@@ -130,6 +131,14 @@ export class Visualizer extends React.Component<IProps, IState> {
       this._stage.viewer.container.addEventListener('dblclick', () => {
         this._stage.toggleFullscreen();
       });
+
+      const container = document.getElementById(this.uuid);
+      if (container) {
+        this._resizeObserver = new ResizeObserver(() => {
+          this._stage.handleResize();
+        });
+        this._resizeObserver.observe(container);
+      }
 
       const data = this.props.data;
       const stringBlob = new Blob([data], { type: 'text/plain' });
@@ -298,6 +307,9 @@ export class Visualizer extends React.Component<IProps, IState> {
   }
 
   componentWillUnmount(): void {
+    if (this._resizeObserver) {
+      this._resizeObserver.disconnect();
+    }
     if (this._pathChangeHandler) {
       offPathChange(this._pathChangeHandler);
     }
